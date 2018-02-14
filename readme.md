@@ -58,7 +58,22 @@ It's not hard, just tedious.  This new and improved Button library makes this mu
     `// Sets 50ms debounce duration`
 
     `Button button = Button(12, BUTTON_PULLUP_INTERNAL, true, 50);`
-
+## Methods
+ * `pullup(buttonMode) ` - Prepare logic for a pullup button. If mode is internal set pin HIGH as default
+ * `pulldown() ` - Set pin LOW as default.
+ * `process() ` - Read and write states; issue callbacks.
+ * `isPressed() ` - Returns true if button is pressed.
+ * `wasPressed() ` - Returns true if the button has been pressed.
+ * `stateChanged() ` - Returns true if state has been changed.
+ * `uniquePress() ` - Returns true if the button is pressed, and was not pressed before.
+ * `setHheldoldThreshold(duration) ` - Set the hold event time threshold.
+ * `held(duration) ` - Check to see if the button has been pressed for time ms.
+ * `heldfor(duration) ` - Polling model for holding, this is true every check after hold time in ms.
+ * `pressHandler(buttonEventHandler) ` - Register a handler for presses on this button.
+ * `releaseHandler(buttonEventHandler) ` - Register a handler for releases on this button.
+ * `clickHandler(buttonEventHandler)` - Register a handler for clicks on this button.
+ * `holdHandler(buttonEventHandler, time) ` - Register a handler for when this button is held.
+ * `unsigned int holdTime() ` - Returns The time this button has been held.
 ## Installing
 
 To install, [download](https://github.com/virgildisgr4ce/Button/zipball/master) the library, extract it to ~/Documents/Arduino/libraries and rename the folder "Button." (Github generates a different name for the zip link.) Restart Arduino if it was already open.
