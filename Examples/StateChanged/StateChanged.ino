@@ -22,7 +22,7 @@
 || Wiring:
 || GND -----/ ------ pin 12
 */
-Button button = Button(12, BUTTON_PULLUP_INTERNAL);
+Button myButton = Button(12, BUTTON_PULLUP_INTERNAL);
 
 void setup(){
   Serial.begin(9600);
@@ -30,7 +30,7 @@ void setup(){
 }
 
 void loop(){
-  if(button.stateChanged()){
+  if(myButton.stateChanged()){
     Serial.println("stateChanged");
     digitalWrite(13,HIGH);
   }else{

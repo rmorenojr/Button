@@ -30,14 +30,14 @@
 || @parameter buttonMode indicates BUTTON_PULLUP or BUTTON_PULLDOWN resistor
 */
 Button::Button(uint8_t buttonPin, uint8_t buttonMode, bool _debounceMode, int _debounceDuration){
-	pin=buttonPin;
+  pin=buttonPin;
   pinMode(pin,INPUT);
   
   debounceMode = _debounceMode;
   debounceDuration = _debounceDuration;
   debounceStartTime = millis();
 
-	buttonMode==BUTTON_PULLDOWN ? pulldown() : pullup(buttonMode);
+  buttonMode==BUTTON_PULLDOWN ? pulldown() : pullup(buttonMode);
   state = 0;
   bitWrite(state,CURRENT,!mode);
   
@@ -58,7 +58,7 @@ Button::Button(uint8_t buttonPin, uint8_t buttonMode, bool _debounceMode, int _d
 */
 void Button::pullup(uint8_t buttonMode)
 {
-	mode=BUTTON_PULLUP;
+  mode=BUTTON_PULLUP;
   if (buttonMode == BUTTON_PULLUP_INTERNAL) 
   {
 	  digitalWrite(pin,HIGH);
@@ -72,7 +72,7 @@ void Button::pullup(uint8_t buttonMode)
 */
 void Button::pulldown(void)
 {
-	mode=BUTTON_PULLDOWN;
+  mode=BUTTON_PULLDOWN;
 }
 
 /*
@@ -163,7 +163,7 @@ void Button::process(void)
 bool Button::isPressed(bool proc)
 {
   if(proc) process();
-	return bitRead(state,CURRENT);
+  return bitRead(state,CURRENT);
 }
 
 /*
@@ -219,7 +219,7 @@ bool Button::held(unsigned int time /*=0*/)
       return true;
     }
   }
-	return false;
+  return false;
 }
 
 /*
@@ -230,11 +230,11 @@ bool Button::held(unsigned int time /*=0*/)
 */
 bool Button::heldFor(unsigned int time) 
 {
-	if (isPressed()) 
+  if (isPressed()) 
   {
-		if (millis()-pressedStartTime > time) { return true; }
-	}
-	return false;
+    if (millis()-pressedStartTime > time) { return true; }
+  }
+  return false;
 }
 
 /*

@@ -1,6 +1,6 @@
 /* $Id$
 ||
-|| @file 		       Button.cpp
+|| @file 		       Button.h
 || @author 		     Alexander Brevig              <alexanderbrevig@gmail.com>        
 || @url            http://alexanderbrevig.com
 ||
@@ -30,7 +30,6 @@ class Button {
   
     Button(uint8_t buttonPin, uint8_t buttonMode=BUTTON_PULLUP_INTERNAL, bool _debounceMode=true, int _debounceDuration=20);
     
-    uint8_t             pin;
     void pullup(uint8_t buttonMode);
     void pulldown();
     void process();
@@ -55,6 +54,7 @@ class Button {
     bool operator==(Button &rhs);
     
   private: 
+    uint8_t             pin;
     uint8_t             mode;
     uint8_t             state;
     bool                debounceMode;

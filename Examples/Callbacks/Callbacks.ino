@@ -27,8 +27,8 @@
 // Uses debounce mode. You may need to experiment with the debounce duration
 // for your particular switch.
 
-Button button = Button(12, BUTTON_PULLUP_INTERNAL, true, 50);
-Button button2 = Button(11, BUTTON_PULLUP_INTERNAL, true, 50);
+Button myButton = Button(12, BUTTON_PULLUP_INTERNAL, true, 50);
+Button myButton2 = Button(11, BUTTON_PULLUP_INTERNAL, true, 50);
 
 // Callbacks
 // "Button& b" is a reference to the button that triggered the callback
@@ -56,17 +56,17 @@ void setup(){
   pinMode(13,OUTPUT); //debug to led 13
 
   // Assign callback functions
-  button.pressHandler(onPress);
-  button.releaseHandler(onRelease);
-  button.holdHandler(onHold, 1000); // must be held for at least 1000 ms to trigger
+  myButton.pressHandler(onPress);
+  myButton.releaseHandler(onRelease);
+  myButton.holdHandler(onHold, 1000); // must be held for at least 1000 ms to trigger
 
-  button2.pressHandler(onPress);
-  button2.releaseHandler(onRelease);
-  button2.holdHandler(onHold, 1000); // must be held for at least 1000 ms to trigger
+  myButton2.pressHandler(onPress);
+  myButton2.releaseHandler(onRelease);
+  myButton2.holdHandler(onHold, 1000); // must be held for at least 1000 ms to trigger
 }
 
 void loop(){
   // update the buttons' internals
-  button.process();
-  button2.process();
+  myButton.process();
+  myButton2.process();
 }
