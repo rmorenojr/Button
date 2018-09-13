@@ -66,90 +66,94 @@ To install, [download](https://github.com/virgildisgr4ce/Button/zipball/master) 
 
 I hope you find this useful! Please report any bugs using the [Github issue tracker](https://github.com/virgildisgr4ce/Button/issues).
 
-## Functions
+# Functions
 
-### constructor - button
-##### Description
+## constructor - button
+#### Description
 	Sets the inital state of this button     
-##### Syntax
+#### Syntax
 	Button myButton(int buttonPin, optional int buttonMode, optional bool debounceMode, optional int debounceDuration);
-##### Parameters
-###### buttonPin
-	int specific Arduino pin connect to the button <required>
-###### buttonMode [optional]
-	BUTTON_PULLUP_INTERNAL using internal Arduino resistor <default>
-	BUTTON_PULLUP   by extenal resistor
-	BUTTON_PULLDOWN by extenal resistor
-###### debouceMode [optional]
-	bool true OR false <default=true>
-###### debounceDuration [optional]
-	int timeInMilliseconds <default=20>
-##### Returns
+#### Arguments
+| Parameter | Description/Value| 
+|-----------|------------------|
+| buttonPin | int value - specific Arduino pin connect to the button |
+| buttonMode |  [optional] <br> BUTTON_PULLUP_INTERNAL using internal Arduino resistor \<default\> <br> BUTTON_PULLUP   by extenal resistor <br> BUTTON_PULLDOWN by extenal resistor |
+| debounceMode  | [optional] bool true OR false \<default=true\>	|
+| debounceDuration  | [optional] int timeInMilliseconds \<default=20\> |
+#### Returns
 	None.
-##### Examples
+#### Examples
 ```C++
 Button myButton(11);
 Button myButton(11, BUTTON_PULLUP_INTERNAL);
 Button myButton(11, BUTTON_PULLUP_INTERNAL, true, 50);
 ```
 
-### pullup
-##### Description
+## pullup
+#### Description
 	changes the buttonMode      
-##### Syntax
-	myButton.pullup(int buttonMode);
-##### Parameters
-###### buttonMode
-	BUTTON_PULLUP_INTERNAL using internal Arduino resistor
-	BUTTON_PULLUP   by extenal resistor
-##### Returns
+#### Syntax
+```C++
+myButton.pullup(int buttonMode);
+```
+#### Arguments
+| Parameter | Description/Value| 
+|-----------|------------------|
+| buttonMode | BUTTON_PULLUP_INTERNAL using internal Arduino resistor <br> BUTTON_PULLUP by extenal resistor |
+#### Returns
 	None.
-##### Examples
+#### Examples
 ```C++
 myButton.pullup(BUTTON_PULLUP);           //assumes external resistor 
 myButton.pullup(BUTTON_PULLUP_INTERNAL);
 ```
 
-### process
-##### Description
+## process
+#### Description
 	read and write states or isse callbacks      
-##### Syntax
-	myButton.process();
-##### Parameters
+#### Syntax
+```C++
+myButton.process();
+```
+#### Arguments
 	None.
-##### Returns
+#### Returns
 	None.
-##### Examples
+#### Examples
 ```C++
 myButton.process();
 ```
 
-### isPressed
-##### Description
+## isPressed
+#### Description
 	returns true if button is pressed      
-##### Syntax
-	myButton.isPressed();
-##### Parameters
+#### Syntax
+```C++
+myButton.isPressed();
+```
+#### Arguments
 	None.
-##### Returns
+#### Returns
 	bool true or false
-##### Examples
+#### Examples
 ```C++
 if(myButton.isPressed()){
   //take action
 }
 ```
 
-### wasPressed
-##### Description
+## wasPressed
+#### Description
 	returns true if button was pressed some time in the past     
-##### Syntax
-	myButton.wasPressed();
-##### Parameters
+#### Syntax
+```C++
+myButton.wasPressed();
+```
+#### Arguments
 	None.
-##### Returns
+#### Returns
 	bool true or false
-##### Examples
+#### Examples
 ```C++
 if(myButton.wasPressed()){
   Serial.println("Button was pressed before");
@@ -158,50 +162,58 @@ if(myButton.wasPressed()){
 }
 ```
 
-### stateChanged
-##### Description
+## stateChanged
+#### Description
 	detects a state change in the button     
-##### Syntax
-	myButton.stateChanged();
-##### Parameters
+#### Syntax
+```C++
+myButton.stateChanged();
+```
+#### Arguments
 	None.
-##### Returns
+#### Returns
 	bool true or false
-##### Examples
+#### Examples
 ```C++
 if(myButton.stateChanged()){
   //take action
 }
 ```
 
-### uniquePress
-##### Description
+## uniquePress
+#### Description
 	detects if button is pressed and was not pressed before     
-##### Syntax
-	myButton.uniquePress();
-##### Parameters
+#### Syntax
+```C++
+myButton.uniquePress();
+```
+#### Arguments
 	None.
-##### Returns
+#### Returns
 	bool true or false
-##### Examples
+#### Examples
 ```C++
 if(myButton.uniquePress()){
   //take action
 }
 ```
 
-## Callbacks
-### pressHandler, releaseHandler, clickHandler, holdHandler
-##### Description
+# Callbacks
+## pressHandler, releaseHandler, clickHandler, holdHandler
+#### Description
 	detects if button is pressed and was not pressed before     
-##### Syntax
-	myButton.pressHandler(functionName);
-	myButton.releaseHandler(functionName);
-	myButton.clickHandler(functionName);
-	myButton.holdHandler(functionName, int milliseconds); 
-##### Parameters
-	functionName - the name of the function that will be called when true
-	milliseconds - the amount of time in ms to trigger the event
+#### Syntax
+```C++
+myButton.pressHandler(functionName);
+myButton.releaseHandler(functionName);
+myButton.clickHandler(functionName);
+myButton.holdHandler(functionName, int milliseconds); 
+```
+#### Arguments
+| Parameter | Description/Value| 
+|-----------|------------------|
+| functionName | the name of the function that will be called when true |
+| milliseconds | the amount of time in ms to trigger the event |
 ##### Returns
 	bool true or false
 ##### Examples
