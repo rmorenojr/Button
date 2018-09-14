@@ -1,12 +1,15 @@
 /* $Id$
 ||
-|| @file 		       Button.cpp
-|| @author 		     Alexander Brevig              <alexanderbrevig@gmail.com>        
-|| @url            http://alexanderbrevig.com
+|| @file	Button.cpp
+|| @version 1.1
+|| @author	Alexander Brevig	<alexanderbrevig@gmail.com>        
+|| @url	http://alexanderbrevig.com
 ||
 || @description
 || | This is a Hardware Abstraction Library for Buttons
 || | It provides an easy way of handling buttons
+|| |
+|| | 09_13_2018 v1.1 Added double-click method by Ricardo Moreno https://github.com/rmorenojr/Button
 || #
 ||
 || @license LICENSE_REPLACE
@@ -44,10 +47,13 @@ Button::Button(uint8_t buttonPin, uint8_t buttonMode, bool _debounceMode, int _d
   cb_onPress = 0;
   cb_onRelease = 0;
   cb_onClick = 0;
+  cb_onDoubleClick = 0;
   cb_onHold = 0;
-  
+  previouspressedStartTime = 0;
+  releasedTime = 0;
   numberOfPresses = 0;
   triggeredHoldEvent = true;
+  doubleclickFound = false;
 }
 
 /*
@@ -122,6 +128,12 @@ void Button::process(void)
       numberOfPresses++;
       if (cb_onPress) { cb_onPress(*this); }   //fire the onPress event
       pressedStartTime = millis();             //start timing
+      //check for double-click
+      unsigned interval = previouspressedStartTime - releasedTime;
+      if (cb_onDoubleClick && interval <= doubleclickThreshhold) {
+        //double-click occured - will not activate until button released
+        doubleclickFound = true;
+      }
       triggeredHoldEvent = false;
     } 
     else //the state changed to RELEASED
@@ -129,7 +141,11 @@ void Button::process(void)
       if (cb_onRelease) { cb_onRelease(*this); } //fire the onRelease event
       if (cb_onClick) { cb_onClick(*this); }   //fire the onClick event AFTER the onRelease
       //reset states (for timing and for event triggering)
+      releasedTime = millis();
+      if (cb_onDoubleClick && doubleclickFound) {cb_onDoubleClick(*this); }  //fire the onDoubleClick event
+      previouspressedStartTime = pressedStartTime;
       pressedStartTime = -1;
+      doubleclickFound = false;
     }
     //note that the state changed
     bitWrite(state,CHANGED,true);
@@ -281,6 +297,18 @@ void Button::releaseHandler(buttonEventHandler handler)
 void Button::clickHandler(buttonEventHandler handler)
 {
   cb_onClick = handler;
+}
+
+/*
+|| @description
+|| | Register a handler for double-clicks on this button
+|| #
+||
+|| @parameter handler The function to call when this button is clicked
+*/
+void Button::doubleclickHandler(buttonEventHandler handler, unsigned int doublclickTime /*=600*/)
+{
+  cb_onDoubleClick = handler;
 }
 
 /*
