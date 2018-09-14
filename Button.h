@@ -1,12 +1,15 @@
 /* $Id$
 ||
-|| @file 		       Button.h
-|| @author 		     Alexander Brevig              <alexanderbrevig@gmail.com>        
-|| @url            http://alexanderbrevig.com
+|| @file	Button.h
+|| @version 1.1
+|| @author	Alexander Brevig	<alexanderbrevig@gmail.com>        
+|| @url	http://alexanderbrevig.com
 ||
 || @description
 || | This is a Hardware Abstraction Library for Buttons
 || | It providea an easy way of handling buttons
+|| |
+|| | Added doubl-click method by Ricardo Moreno https://github.com/rmorenojr/Button
 || #
 ||
 || @license LICENSE_REPLACE
@@ -29,6 +32,8 @@ class Button {
   public:
   
     Button(uint8_t buttonPin, uint8_t buttonMode=BUTTON_PULLUP_INTERNAL, bool _debounceMode=true, int _debounceDuration=20);
+
+    uint8_t             pin;
     
     void pullup(uint8_t buttonMode);
     void pulldown();
@@ -46,6 +51,7 @@ class Button {
     void pressHandler(buttonEventHandler handler);
     void releaseHandler(buttonEventHandler handler);
     void clickHandler(buttonEventHandler handler);
+    void doubleclickHandler(buttonEventHandler handler, unsigned int doublclickTime=600);
     void holdHandler(buttonEventHandler handler, unsigned int holdTime=0);
   
     unsigned int holdTime() const;
@@ -54,17 +60,21 @@ class Button {
     bool operator==(Button &rhs);
     
   private: 
-    uint8_t             pin;
     uint8_t             mode;
     uint8_t             state;
     bool                debounceMode;
+    bool                doubleclickFound;
     unsigned long       pressedStartTime;
+    unsigned long       previouspressedStartTime;
+    unsigned long       releasedTime;
     unsigned int        holdEventThreshold;
+    unsigned int        doubleclickThreshhold;
     unsigned long       debounceStartTime;
     int                 debounceDuration;
     buttonEventHandler  cb_onPress;
     buttonEventHandler  cb_onRelease;
     buttonEventHandler  cb_onClick;
+    buttonEventHandler  cb_onDoubleClick;
     buttonEventHandler  cb_onHold;
     unsigned int        numberOfPresses;
     bool                triggeredHoldEvent;
