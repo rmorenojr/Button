@@ -53,7 +53,7 @@ Example Header (the header to this file modified according to rules)
 || #
 ||
 || @description
-|| | Descripbe the rights and expectations when using my code
+|| | Describe the rights and expectations when using my code
 || #
 ||
 || @dependencies
