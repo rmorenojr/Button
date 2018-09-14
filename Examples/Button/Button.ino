@@ -7,8 +7,11 @@
 ||
 || @description
 || | Display the intuitive way of using a button when using this Hardware Abstraction class
+|| #
+||
+|| @revisions
 || | xx_xx_xxxx Minor fixes by Ted Hayes / ted.hayes@liminastudio.com
-|| | 09_13_2018 v1.2 Revised instantiation object name and format by Ricardo Moreno 
+|| | 09_13_2018 v1.2 Revised instantiation object name and format by Ricardo Moreno
 || #
 ||
 || @license
@@ -22,6 +25,7 @@
 #include <Button.h>
 
 /*
+|| Wiring:
 || GND -----/ ------ pin 12 to button
 || GND -----/ ------ pin 13 to LED
 */
