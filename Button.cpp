@@ -9,7 +9,11 @@
 || | This is a Hardware Abstraction Library for Buttons
 || | It provides an easy way of handling buttons
 || |
-|| | 09_13_2018 v1.1 Added double-click method by Ricardo Moreno https://github.com/rmorenojr/Button
+|| #
+||
+|| @revisions
+|| | 09_15_2018 v1.1 Added double-click callback method 
+|| |                 by Ricardo Moreno https://github.com/rmorenojr/Button
 || #
 ||
 || @license LICENSE_REPLACE
@@ -50,7 +54,6 @@ Button::Button(uint8_t buttonPin, uint8_t buttonMode, bool _debounceMode, int _d
   cb_onDoubleClick = 0;
   cb_onHold = 0;
   previouspressedStartTime = 0;
-  releasedTime = 0;
   numberOfPresses = 0;
   triggeredHoldEvent = true;
   doubleclickFound = false;
@@ -109,12 +112,13 @@ void Button::process(void)
   if (bitRead(state,CURRENT) != bitRead(state,PREVIOUS))
   {
     unsigned int interval = millis() - debounceStartTime;
+    // Debug Code:
     // if(debounceMode){
     //   Serial.print("debounceStartTime: ");
     //   Serial.print(debounceStartTime);
     //   Serial.print("\tdebounceDuration: ");
     //   Serial.println(debounceDuration);
-      // Serial.println(interval);
+    //   Serial.println(interval);
     // }
     if(debounceMode && interval < debounceDuration){
       // not enough time has passed; ignore
@@ -128,12 +132,6 @@ void Button::process(void)
       numberOfPresses++;
       if (cb_onPress) { cb_onPress(*this); }   //fire the onPress event
       pressedStartTime = millis();             //start timing
-      //check for double-click
-      unsigned interval = previouspressedStartTime - releasedTime;
-      if (cb_onDoubleClick && interval <= doubleclickThreshhold) {
-        //double-click occured - will not activate until button released
-        doubleclickFound = true;
-      }
       triggeredHoldEvent = false;
     } 
     else //the state changed to RELEASED
@@ -141,11 +139,18 @@ void Button::process(void)
       if (cb_onRelease) { cb_onRelease(*this); } //fire the onRelease event
       if (cb_onClick) { cb_onClick(*this); }   //fire the onClick event AFTER the onRelease
       //reset states (for timing and for event triggering)
-      releasedTime = millis();
-      if (cb_onDoubleClick && doubleclickFound) {cb_onDoubleClick(*this); }  //fire the onDoubleClick event
-      previouspressedStartTime = pressedStartTime;
+      
+      //check for double-click
+      unsigned interval = millis() - previouspressedStartTime;
+      if (interval <= doubleclickThreshold) {
+        //double-click occured
+        doubleclickFound = true;
+        if (cb_onDoubleClick) { cb_onDoubleClick(*this); } //fire the onDoubleClick event AFTER the onRelease
+      } else {
+        doubleclickFound = false;
+      }
+      previouspressedStartTime = pressedStartTime;              //store previous button press start time
       pressedStartTime = -1;
-      doubleclickFound = false;
     }
     //note that the state changed
     bitWrite(state,CHANGED,true);
@@ -181,6 +186,20 @@ bool Button::isPressed(bool proc)
   if(proc) process();
   return bitRead(state,CURRENT);
 }
+
+/*
+|| @description
+|| | Return the bitRead(state,CURRENT) of the switch
+|| #
+|| 
+|| @return true if button is pressed
+*/
+bool Button::isDoubleClicked(bool proc)
+{
+  if(proc) process();
+  return doubleclickFound;
+}
+
 
 /*
 || @description
@@ -265,6 +284,18 @@ void Button::setHoldThreshold(unsigned int holdTime)
 
 /*
 || @description
+|| | Set the double-click event time threshold
+|| |  The time in ms when the first click starts and
+|| |  second click ends
+|| #
+*/
+void Button::setdoubleclickThreshold(unsigned int doublclickTime) 
+{ 
+  doubleclickThreshold = doublclickTime; 
+}
+
+/*
+|| @description
 || | Register a handler for presses on this button
 || #
 ||
@@ -306,7 +337,7 @@ void Button::clickHandler(buttonEventHandler handler)
 ||
 || @parameter handler The function to call when this button is clicked
 */
-void Button::doubleclickHandler(buttonEventHandler handler, unsigned int doublclickTime /*=600*/)
+void Button::doubleclickHandler(buttonEventHandler handler, unsigned int doublclickTime /*=900*/)
 {
   cb_onDoubleClick = handler;
 }
@@ -331,7 +362,12 @@ void Button::holdHandler(buttonEventHandler handler, unsigned int holdTime /*=0*
 ||
 || @return The time this button has been held
 */
-unsigned int Button::holdTime() const { if (pressedStartTime!=-1) { return millis()-pressedStartTime; } else return 0; }
+unsigned int Button::holdTime() const { 
+  if (pressedStartTime!=-1) { 
+    return millis()-pressedStartTime; 
+  } else return 0; 
+}
+
 
 /*
 || @description
