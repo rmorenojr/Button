@@ -13,15 +13,23 @@ Button	KEYWORD1
 #######################################
 
 isPressed	KEYWORD2
+isDoubleClicked	KEYWORD2
 wasPressed	KEYWORD2
 stateChanged	KEYWORD2
 uniquePress	KEYWORD2
-pullup	KEYWORD2
+pullup		KEYWORD2
 pulldown	KEYWORD2
+pressHandler	KEYWORD2
+releaseHandler	KEYWORD2
+clickHandler	KEYWORD2
+doubleclickHandler	KEYWORD2
+holdHandler	KEYWORD2
+holdTime	KEYWORD2
+presses		KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
 
-PULLUP	LITERAL1
+PULLUP		LITERAL1
 PULLDOWN	LITERAL1
